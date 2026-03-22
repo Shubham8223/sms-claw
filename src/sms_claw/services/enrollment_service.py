@@ -76,28 +76,16 @@ class EnrollmentService:
 
     async def handle_inbound(self, phone: str, body: str) -> str | None:
         """
-        Called before the agent for every message.
-
-        Returns
-        -------
-        str   — an SMS reply to send directly (OTP flows, not-allowed).
-        None  — phone is enrolled and ready for the agent.
-
-        Raises
-        ------
-        PhoneNotAllowedError — phone not on allowlist (caller should drop silently).
+        Auto-enroll allowed phones — no OTP required.
+        Returns None immediately so the agent handles the message.
+        Raises PhoneNotAllowedError if phone is not on the allowlist.
         """
         assert_phone_allowed(phone)
 
         enrolled = await is_enrolled(phone, self._redis)
-        stripped = body.strip()
-
         if not enrolled:
-            # Is this an OTP submission?
-            if stripped.isdigit() and len(stripped) == 6:
-                return await self.complete_enrollment(phone, stripped)
+            await self._user_repo.get_or_create(phone)
+            await self._redis.set(f"enrolled:{phone}", "1")
+            log.info("auto_enrolled", phone=phone)
 
-            # Explicit re-enroll command or first contact
-            return await self.begin_enrollment(phone)
-
-        return None  # enrolled — let the agent handle it
+        return None  # always let the agent handle the message
