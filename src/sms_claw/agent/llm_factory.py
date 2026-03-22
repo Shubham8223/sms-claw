@@ -39,11 +39,10 @@ def build_llm(
         if _provider == "openai":
             from langchain_openai import ChatOpenAI
 
-            return ChatOpenAI(
-                model=_model,
-                api_key=s.openai_api_key,
-                **kwargs,
-            )
+            extra: dict = {}
+            if base_url := getattr(s, "openai_base_url", ""):
+                extra["base_url"] = base_url
+            return ChatOpenAI(model=_model, api_key=s.openai_api_key, **extra, **kwargs)
 
         if _provider == "google":
             from langchain_google_genai import ChatGoogleGenerativeAI
