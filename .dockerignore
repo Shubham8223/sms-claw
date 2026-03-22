@@ -1,0 +1,63 @@
+# ── Python cache ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environments ───────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Test & coverage ────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# ── Logs & local data ──────────────────────────
+logs/
+*.log
+
+# ── Git ────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+
+# ── CI/CD & infra ──────────────────────────────
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+*.tf
+*.tfstate
+*.tfvars
+
+# ── Docker itself ──────────────────────────────
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# ── IDE & OS junk ──────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Secrets & env files ────────────────────────
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# ── Docs ───────────────────────────────────────
+docs/
+*.md
+README*
+
+# ── Node (if any frontend exists) ─────────────
+node_modules/
